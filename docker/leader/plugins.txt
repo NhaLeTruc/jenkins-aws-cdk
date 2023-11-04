@@ -1,0 +1,4 @@
+amazon-ecs:1.48
+blueocean:1.27.8
+pipeline-cloudwatch-logs:0.2
+configuration-as-code:1714.v09593e830cfa

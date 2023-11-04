@@ -1,28 +1,27 @@
 #!/usr/bin/env python3
-import os
 
-import aws_cdk as cdk
+from aws_cdk import core
+from os import getenv
+from configparser import ConfigParser
+from jenkins_aws_cdk.network import Network
+from jenkins_aws_cdk.ecs import ECSCluster
+from jenkins_aws_cdk.jenkins_leader import JenkinsLeader
+from jenkins_aws_cdk.jenkins_worker import JenkinsWorker
 
-from jenkins_aws_cdk.jenkins_aws_cdk_stack import JenkinsAwsCdkStack
+config = ConfigParser()
+config.read('config.ini')
+
+stack_name = config['DEFAULT']['stack_name'] 
+account = getenv('CDK_DEFAULT_ACCOUNT')
+region = getenv('CDK_DEFAULT_REGION')
+
+service_discovery_namespace = 'jenkins'
 
 
-app = cdk.App()
-JenkinsAwsCdkStack(app, "JenkinsAwsCdkStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
-
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
-
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
-
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-    )
+app = core.App()
+network = Network(app, stack_name + 'Network')
+ecs_cluster = ECSCluster(app, stack_name + 'ECS', vpc=network.vpc, service_discovery_namespace=service_discovery_namespace)
+jenkins_workers = JenkinsWorker(app, stack_name + "Worker", vpc=network.vpc, cluster=ecs_cluster)
+jenkins_leader_service = JenkinsLeader(app, stack_name + 'JenkinsLeader', cluster=ecs_cluster, vpc=network, worker=jenkins_workers)
 
 app.synth()
