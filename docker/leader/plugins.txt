@@ -2,6 +2,7 @@ amazon-ecs:1.48
 blueocean:1.27.8
 pipeline-cloudwatch-logs:0.2
 ant:latest
+authorize-project:latest
 antisamy-markup-formatter:latest
 build-timeout:latest
 cloudbees-folder:latest
@@ -18,6 +19,7 @@ pam-auth:latest
 pipeline-github-lib:latest
 pipeline-stage-view:latest
 ssh-slaves:latest
+sse-gateway:latest
 timestamper:latest
 workflow-aggregator:latest
 ws-cleanup:latest

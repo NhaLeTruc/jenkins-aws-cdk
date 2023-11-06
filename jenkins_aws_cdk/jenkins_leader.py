@@ -68,6 +68,14 @@ class JenkinsLeader(core.Stack):
                 cloud_map_options=ecs.CloudMapOptions(name="leader", dns_record_type=sd.DnsRecordType('A'))
             )
 
+            self.jenkins_leader_service_main.target_group.configure_health_check(
+                port="8080",
+                healthy_threshold_count=5,
+                unhealthy_threshold_count=5,
+                timeout=core.Duration.seconds(30),
+                interval=core.Duration.seconds(60)
+            )
+
             self.jenkins_leader_service = self.jenkins_leader_service_main.service
             self.jenkins_leader_task = self.jenkins_leader_service.task_definition
 
