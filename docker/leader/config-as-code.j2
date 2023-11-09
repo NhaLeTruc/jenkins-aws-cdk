@@ -1,4 +1,15 @@
 jenkins:
+    numExecutors: 0
+    securityRealm:
+        local:
+            allowsSignup: false
+            users:
+                - id: {{JENKINS_ADMIN_ID}}
+                  password: {{JENKINS_ADMIN_PASSWORD}}
+    authorizationStrategy:
+        globalMatrix:
+            permissions:
+                - "Overall/Administer:{{JENKINS_ADMIN_ID}}"
     remotingSecurity:
         enabled: true
     clouds:
@@ -31,13 +42,11 @@ jenkins:
                     value: {{LOG_GROUP}}
                   - name: awslogs-stream-prefix
                     value: {{LOG_STREAM_PREFIX}}
-
 security:
     queueItemAuthenticator:
         authenticators:
             - global:
                 strategy: triggeringUsersAuthorizationStrategy
-
 unclassified:
     location:
         url: {{JENKINS_URL}}
