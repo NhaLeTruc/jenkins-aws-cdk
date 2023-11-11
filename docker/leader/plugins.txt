@@ -1,4 +1,4 @@
-role-strategy:latest
+matrix-auth:latest
 configuration-as-code:latest
 authorize-project:latest
 amazon-ecs:latest
