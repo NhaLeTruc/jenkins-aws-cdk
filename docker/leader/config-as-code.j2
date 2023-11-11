@@ -7,9 +7,15 @@ jenkins:
                 - id: {{JENKINS_ADMIN_ID}}
                   password: {{JENKINS_ADMIN_PASSWORD}}
     authorizationStrategy:
-        globalMatrix:
-            permissions:
-                - "Overall/Administer:{{JENKINS_ADMIN_ID}}"
+        roleBased:
+            roles:
+                global:
+                  - name: "admin"
+                    description: "Jenkins administrators"
+                    permissions:
+                        - "Overall/Administer"
+                    entries:
+                        - user: {{JENKINS_ADMIN_ID}}
     remotingSecurity:
         enabled: true
     clouds:

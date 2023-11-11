@@ -1,12 +1,13 @@
-amazon-ecs:1.48
-blueocean:1.27.8
-pipeline-cloudwatch-logs:0.2
-ant:latest
+role-strategy:latest
+configuration-as-code:latest
 authorize-project:latest
+amazon-ecs:latest
+blueocean:latest
+pipeline-cloudwatch-logs:latest
+ant:latest
 antisamy-markup-formatter:latest
 build-timeout:latest
 cloudbees-folder:latest
-configuration-as-code:latest
 credentials-binding:latest
 email-ext:latest
 git:latest
@@ -14,7 +15,6 @@ github-branch-source:latest
 gradle:latest
 ldap:latest
 mailer:latest
-matrix-auth:latest
 pam-auth:latest
 pipeline-github-lib:latest
 pipeline-stage-view:latest

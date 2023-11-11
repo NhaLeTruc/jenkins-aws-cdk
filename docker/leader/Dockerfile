@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:lts-jdk17
 
 # Install custom plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt

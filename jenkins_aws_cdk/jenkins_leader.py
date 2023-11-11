@@ -75,7 +75,8 @@ class JenkinsLeader(core.Stack):
                 healthy_threshold_count=5,
                 unhealthy_threshold_count=5,
                 timeout=core.Duration.seconds(30),
-                interval=core.Duration.seconds(60)
+                interval=core.Duration.seconds(60),
+                healthy_http_codes="403"
             )
 
             self.jenkins_leader_service = self.jenkins_leader_service_main.service
