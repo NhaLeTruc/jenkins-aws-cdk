@@ -18,7 +18,9 @@ def main():
         EXECUTION_ROLE_ARN=getenv('execution_role_arn'),
         TASK_ROLE_ARN=getenv('task_role_arn'),
         LOG_GROUP=getenv('worker_log_group'),
-        LOG_STREAM_PREFIX=getenv('worker_log_stream_prefix')
+        LOG_STREAM_PREFIX=getenv('worker_log_stream_prefix'),
+        JENKINS_ADMIN_ID=getenv('jenkins_admin_id'),
+        JENKINS_ADMIN_PASSWORD=getenv('jenkins_admin_pass')
     )))
 
     _config_file.close()

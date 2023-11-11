@@ -52,7 +52,9 @@ class JenkinsLeader(core.Stack):
                     'execution_role_arn': self.worker.worker_execution_role.role_arn,
                     'task_role_arn': self.worker.worker_task_role.role_arn,
                     'worker_log_group': self.worker.worker_logs_group.log_group_name,
-                    'worker_log_stream_prefix': self.worker.worker_log_stream.log_stream_name
+                    'worker_log_stream_prefix': self.worker.worker_log_stream.log_stream_name,
+                    'jenkins_admin_id': config['DEFAULT']['jenkins_admin_id'],
+                    'jenkins_admin_pass': config['DEFAULT']['jenkins_admin_pass']
                 },
             )
 
@@ -66,6 +68,15 @@ class JenkinsLeader(core.Stack):
                 enable_ecs_managed_tags=True,
                 task_image_options=self.jenkins_task,
                 cloud_map_options=ecs.CloudMapOptions(name="leader", dns_record_type=sd.DnsRecordType('A'))
+            )
+
+            self.jenkins_leader_service_main.target_group.configure_health_check(
+                port="8080",
+                healthy_threshold_count=5,
+                unhealthy_threshold_count=5,
+                timeout=core.Duration.seconds(30),
+                interval=core.Duration.seconds(60),
+                healthy_http_codes="403"
             )
 
             self.jenkins_leader_service = self.jenkins_leader_service_main.service
@@ -101,7 +112,9 @@ class JenkinsLeader(core.Stack):
                     'worker_stack': self.worker.stack_name,
                     'cluster_arn': self.cluster.cluster.cluster_arn,
                     'aws_region': config['DEFAULT']['region'],
-                    'jenkins_url': config['DEFAULT']['jenkins_url'],  
+                    'jenkins_url': config['DEFAULT']['jenkins_url'],
+                    'jenkins_admin_id': config['DEFAULT']['jenkins_admin_id'],
+                    'jenkins_admin_pass': config['DEFAULT']['jenkins_admin_pass'],
                     'subnet_ids': ",".join([x.subnet_id for x in self.vpc.vpc.private_subnets]),
                     'security_group_ids': self.worker.worker_security_group.security_group_id,
                     'execution_role_arn': self.worker.worker_execution_role.role_arn,
